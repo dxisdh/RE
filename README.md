@@ -221,8 +221,112 @@ for i in range(31,16,-2):
 
 print("picoCTF{{{}}}".format(''.join(buffer)))
 ``
-[vault-door-3]: `picoCTF{jU5t_a_s1mpl3_an4gr4m_4_u_79958f}`
-[vault-door-4]: `picoCTF{jU5t_4_bUnCh_0f_bYt3s_8f_4a6cbf3b}`
+Flag: `picoCTF{jU5t_a_s1mpl3_an4gr4m_4_u_79958f}`
+#### vault-door-4
+This vault uses ASCII encoding for the password. The source code for this vault is here:
+```
+import java.util.*;
+
+class VaultDoor4 {
+    public static void main(String args[]) {
+        VaultDoor4 vaultDoor = new VaultDoor4();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter vault password: ");
+        String userInput = scanner.next();
+	String input = userInput.substring("picoCTF{".length(),userInput.length()-1);
+	if (vaultDoor.checkPassword(input)) {
+	    System.out.println("Access granted.");
+	} else {
+	    System.out.println("Access denied!");
+        }
+    }
+
+    // I made myself dizzy converting all of these numbers into different bases,
+    // so I just *know* that this vault will be impenetrable. This will make Dr.
+    // Evil like me better than all of the other minions--especially Minion
+    // #5620--I just know it!
+    //
+    //  .:::.   .:::.
+    // :::::::.:::::::
+    // :::::::::::::::
+    // ':::::::::::::'
+    //   ':::::::::'
+    //     ':::::'
+    //       ':'
+    // -Minion #7781
+    public boolean checkPassword(String password) {
+        byte[] passBytes = password.getBytes();
+        byte[] myBytes = {
+            106 , 85  , 53  , 116 , 95  , 52  , 95  , 98  ,
+            0x55, 0x6e, 0x43, 0x68, 0x5f, 0x30, 0x66, 0x5f,
+            0142, 0131, 0164, 063 , 0163, 0137, 070 , 0146,
+            '4' , 'a' , '6' , 'c' , 'b' , 'f' , '3' , 'b' ,
+        };
+        for (int i=0; i<32; i++) {
+            if (passBytes[i] != myBytes[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+Mở source code lên, ta thấy flag có độ dài là 32. Tại mảng myBytes, ta thấy 8 số đầu tiên thuộc hệ thập phân, 8 số tiếp theo thuộc hệ thập lục phân, 8 số tiếp theo thuộc mã ASCII và 8 kí tự cuối. Ta dùng tool decode hệ thập phân, hệ thập lục phân và chuyển mã ASCII. Ta dùng mảng passBytes dùng để nối các kí tự ở mảng myBytes. Cuối cùng ta thu được flag.
+Flag: `picoCTF{jU5t_4_bUnCh_0f_bYt3s_8f_4a6cbf3b}`
+#### vault-door-5
+In the last challenge, you mastered octal (base 8), decimal (base 10), and hexadecimal (base 16) numbers, but this vault door uses a different change of base as well as URL encoding! The source code for this vault is here:
+```
+import java.net.URLDecoder;
+import java.util.*;
+
+class VaultDoor5 {
+    public static void main(String args[]) {
+        VaultDoor5 vaultDoor = new VaultDoor5();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter vault password: ");
+        String userInput = scanner.next();
+	String input = userInput.substring("picoCTF{".length(),userInput.length()-1);
+	if (vaultDoor.checkPassword(input)) {
+	    System.out.println("Access granted.");
+	} else {
+	    System.out.println("Access denied!");
+        }
+    }
+
+    // Minion #7781 used base 8 and base 16, but this is base 64, which is
+    // like... eight times stronger, right? Riiigghtt? Well that's what my twin
+    // brother Minion #2415 says, anyway.
+    //
+    // -Minion #2414
+    public String base64Encode(byte[] input) {
+        return Base64.getEncoder().encodeToString(input);
+    }
+
+    // URL encoding is meant for web pages, so any double agent spies who steal
+    // our source code will think this is a web site or something, defintely not
+    // vault door! Oh wait, should I have not said that in a source code
+    // comment?
+    //
+    // -Minion #2415
+    public String urlEncode(byte[] input) {
+        StringBuffer buf = new StringBuffer();
+        for (int i=0; i<input.length; i++) {
+            buf.append(String.format("%%%2x", input[i]));
+        }
+        return buf.toString();
+    }
+
+    public boolean checkPassword(String password) {
+        String urlEncoded = urlEncode(password.getBytes());
+        String base64Encoded = base64Encode(urlEncoded.getBytes());
+        String expected = "JTYzJTMwJTZlJTc2JTMzJTcyJTc0JTMxJTZlJTY3JTVm"
+                        + "JTY2JTcyJTMwJTZkJTVmJTYyJTYxJTM1JTY1JTVmJTM2"
+                        + "JTM0JTVmJTYzJTMxJTM0JTYzJTYzJTY1JTMxJTMx";
+        return base64Encoded.equals(expected);
+    }
+}
+```
+Mở source code lên, ta thấy ở hàm checkPassword sẽ trả về một xâu kí tự. 
 [vault-door-5]: `picoCTF{c0nv3rt1ng_fr0m_ba5e_64_e3152bf4}`
 [vault-door-6]: `picoCTF{n0t_mUcH_h4rD3r_tH4n_x0r_948b888}`
 [vault-door-7]: `picoCTF{A_b1t_0f_b1t_sh1fTiNg_dc80e28124}`
