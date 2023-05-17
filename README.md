@@ -200,7 +200,27 @@ class VaultDoor3 {
     }
 }
 ```
-Mở source code lên, ta thấy ở trong hàm checkPassword có câu lệnh if kiểm tra xem độ dài của password có bằng 32 hay không. Tiếp theo ta khai báo kiểu char cho biến buffer để lưu các kí tự. Tại vòng for đầu tiên, i chạy từ 0 cho đến 7 và 
+Mở source code lên, ta thấy ở trong hàm checkPassword có câu lệnh if kiểm tra xem độ dài của password có bằng 32 hay không. Tiếp theo ta khai báo kiểu char cho biến buffer để lưu các kí tự. Ta thực hiện việc sắp xếp trật tự các kí tự ở trong xâu: `jU5t_a_sna_3lpm18g947_u_4_m9r54f`. Tại vòng lặp đầu tiên, 8 kí tự đầu không thay đổi vị trí được lưu vào buffer. Tại vòng lặp thứ hai, i chạy từ 8 đến 15 và các kí tự được lưu vào buffer với trật tự sắp xếp là 23 - i. Tại vòng lặp thứ ba, i chạy từ 16 đến 31 và tăng lần lượt 2 kí tự và các kí tự được lưu vào buffer với trật tự sắp xếp là 46 - i. Tại vòng lặp cuối cùng, i chạy từ 31 đến 17 và giảm lần lưượt và vị trí không thay đổi.
+
+Ta viết chương trình sắp xếp lại xâu:
+``
+buffer = [None] * 32
+password = 'jU5t_a_sna_3lpm18g947_u_4_m9r54f'
+
+for i in range(0,8):
+ 	buffer[i] = password[i]
+
+for i in range(8,16):
+     	buffer[i] = password[23-i]
+
+for i in range(16,32,2):
+     	buffer[i] = password[46-i]
+
+for i in range(31,16,-2):
+     	buffer[i] = password[i]
+
+print("picoCTF{{{}}}".format(''.join(buffer)))
+``
 [vault-door-3]: `picoCTF{jU5t_a_s1mpl3_an4gr4m_4_u_79958f}`
 [vault-door-4]: `picoCTF{jU5t_4_bUnCh_0f_bYt3s_8f_4a6cbf3b}`
 [vault-door-5]: `picoCTF{c0nv3rt1ng_fr0m_ba5e_64_e3152bf4}`
