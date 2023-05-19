@@ -889,6 +889,7 @@ def choose_greatest():
 choose_greatest()
 ```
 Mở source code lên, ta thấy hàm decode_secret sẽ thực hiện thuật toán giải mã ROT-47. Ta dùng tool giải mã ROT-47 là tìm được flag.
+
 Flag: `picoCTF{1|\/|_4_p34|\|ut_dd2c4616}`
 #### bloat-py
 ```
@@ -948,4 +949,5 @@ a[81]+a[68]+a[66]+a[83])
     return False
 ```
 Ta thấy nếu arg432 == a[71]+a[64]+a[79]+a[79]+a[88]+a[66]+a[71]+a[64]+a[77]+a[66]+a[68] thì ta sẽ nhận được cụm `happychance`, còn nếu không thì sẽ chương trình sẽ in ra `password is incorrect`. Ta nhập vào webshell của pico: `python3 bloat.py`, sau đó ta sẽ cần nhập password là happychance và nhận được flag
+
 Flag: `picoCTF{d30bfu5c4710n_f7w_b8062eec}`
