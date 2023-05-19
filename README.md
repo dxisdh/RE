@@ -547,8 +547,13 @@ for i in range(0,8):
 print("picoCTF{{{}}}".format(buffer))
 ```
 Flag: `picoCTF{A_b1t_0f_b1t_sh1fTiNg_dc80e28124}`
+#### Transformation
+I wonder what this really is... enc ''.join([chr((ord(flag[i]) << 8) + ord(flag[i + 1])) for i in range(0, len(flag), 2)])
 
-[Transformation]: `picoCTF{picoCTF{16_bits_inst34d_of_8_04c0760d}`
+enc = 灩捯䍔䙻ㄶ形楴獟楮獴㌴摟潦弸弰㑣〷㘰摽
+#### Solution
+Ta thây chương trình cho biết rằng mỗi kí tự trong flag được di chuyển sang trái 8 bit sau đó thêm kí tự đằng sau
+[Transformation]: `picoCTF{16_bits_inst34d_of_8_04c0760d}`
 [keygenme-py]: `picoCTF{1n_7h3_|<3y_of_54ef6292}`
 [crackme-py]: `picoCTF{1|\/|_4_p34|\|ut_dd2c4616}`
 [bloat.py]: `picoCTF{d30bfu5c4710n_f7w_b8062eec}`
