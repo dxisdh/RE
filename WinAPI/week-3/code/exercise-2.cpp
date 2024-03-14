@@ -8,7 +8,7 @@
 
 extern "C" void ShowMessage();
 
-// main program
+// program
 #include "pch.h"
 #include<iostream>
 #include<windows.h>
@@ -17,4 +17,12 @@ extern "C" void ShowMessage();
 void ShowMessage()
 {
 	MessageBoxA(NULL, "Hi! I'm a DLL", "Message", 0);
+}
+
+// hellodllclient
+#include <iostream>
+#include "hellodll.h" 
+int main()
+{
+    ShowMessage();
 }
