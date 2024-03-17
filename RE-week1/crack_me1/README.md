@@ -169,7 +169,7 @@ char __cdecl sub_341080(int a1, int a2, int a3)
   - Kiểm tra kí tự a[i] và a[i+1] tại vị trí idx bằng cách dịch bit nhiều lần và XOR với 0x1693 sau đó so sánh với WORD trong data.
 <img src= https://github.com/dxisdh/RE/blob/main/RE-week1/crack_me1/9.png>
 
-  - Thuật toán mã hóa Base64 đã được sử dụng: `ABDCEHGFIJKLUNOPYRTSMVWXQZajcdefohibkmlngpqrstuv4xzy8123w56709+0` -> `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/`
+  - Thuật toán mã hóa Base64 đã được sử dụng
 <img src= https://github.com/dxisdh/RE/blob/main/RE-week1/crack_me1/10.png>
 
   - Đây là thuật toán mã hóa RC4 với key là "susan" và bảng mã tại đầu hàm `sub_341080`
