@@ -176,4 +176,5 @@ char __cdecl sub_341080(int a1, int a2, int a3)
 - Ta còn 2 hàm còn lại cũng bị shellcode nên ta sẽ làm tương tự như trên:
 <img src= https://github.com/dxisdh/RE/blob/main/RE-week1/crack_me1/11.png>
 <img src= https://github.com/dxisdh/RE/blob/main/RE-week1/crack_me1/12.png>
+
 ## Code solve
