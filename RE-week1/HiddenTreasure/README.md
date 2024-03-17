@@ -1,6 +1,6 @@
 ## Phân tích
 Ta nhận được 1 file exe và 1 bức ảnh. Dùng lệnh file để biết đây là 1 file PE32:
-<img src= https://github.com/dxisdh/RE/blob/main/RE-week1/crackme_1/2.png>
+<img src= https://github.com/dxisdh/RE/blob/main/RE-week1/HiddenTreasure/2.png>
 
 Mở IDA và xem pseudocode. Ta sẽ phân tích từng phần như sau:
 ````
@@ -40,7 +40,7 @@ Trong đoạn code này, từng bit của string sẽ được mã hóa, ví d�
 if ( *(_WORD *)lpBaseAddress == 0x4D42 && FileSize >= *(_DWORD *)(lpBaseAddress + 2) )
 ``
 Dòng này sẽ kiểm tra xem có map vào file signature của file ảnh không (do 0x4D42 chuyển sang ASCII là BM)
-<img src= https://github.com/dxisdh/RE/blob/main/RE-week1/crackme_1/3.png>
+<img src= https://github.com/dxisdh/RE/blob/main/RE-week1/HiddenTreasure/3.png>
 
 ````
               start_data = v17;
