@@ -148,4 +148,77 @@ LRESULT __stdcall sub_451350(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 ## Phân tích hàm check
 Ta thấy trong switch case sẽ kiểm tra từng case, và mỗi case đều dùng anti-debug và xử lí dữ liệu liên quan tới 2 biến dword_703360 và dword_7033F8
 ### Case 1:
-- Chương trình lấy trường NtGlobalFlag để check xem có đang debug hay không, nếu có thì được set giá trị bằng 0x70. Ta sẽ đi theo đường màu xanh, lúc đó dl mang giá trị 0 và được sử dụng tại hàm sub_92050
+- Chương trình lấy trường NtGlobalFlag để check xem có đang debug hay không, nếu có thì được set giá trị bằng 0x70. Ta sẽ đi theo đường màu xanh, lúc đó dl mang giá trị 0 và được sử dụng tại hàm sub_92050. Hàm này chỉ có chức năng tạo ra 1 const data
+````
+while ( 2 )
+  {
+    switch ( dword_4532C8[v3] )
+    {
+      case 1:
+        v4 = const[v3];
+        v5 = this[table[v3]];
+        v24 = NtCurrentPeb()->NtGlobalFlag & 0x70;
+        v6 = gen_const(v24 == 112, (int)v25, v4);
+        v7 = v26;
+        if ( v26 >= 256 )
+          v7 = 0;
+        v26 = v7 + 1;
+        v2 = byte_45329F[v7 + 1] == (char)(v5 ^ v6);
+        goto LABEL_9;
+````
+- Ta thấy gen_const xong sẽ xor với byte_45329F sẽ ra input đúng
+### Case 2:
+- Chương trình kiểm tra debugger bằng trường Flags có offset 0xC
+- Nếu có debugger thì v11 = 0x40000062
+- Giá trị của dl bằng 1 khi không debug
+### Case 3:
+- Chương trình kiểm tra debugger bằng trường Flags có offset 0x10
+- Nếu có debugger thì v6 = 0x40000060
+- Giá trị của dl bằng 1 khi không debug
+### Case 4:
+- Nếu cờ HEAP_TAIL_CHECKING_ENABLED được set trong NtGlobalFlag, cụm 0xABABABAB sẽ được thêm vào cuối khối heap
+- Nếu như có 8 khối AB thì sẽ trả về giá trị 1 (tức có debug)
+- Giá trị của dl bằng 0 khi không debug
+### Case 5:
+- Chương trình kiểm tra xem có process của debugger hay không
+- Giá trị của dl bằng 1 khi không debug
+### Case 6:
+````
+bool __usercall sub_451AA0@<al>(char a1@<dl>, int a2@<ecx>, int a3)
+{
+  struct _LIST_ENTRY *v5; // eax
+  int (__stdcall *v6)(int); // esi
+  char v7; // bl
+  char v8; // al
+  char v9; // al
+
+  v5 = resolve_func((void *)0x2489AAB);
+  v6 = (int (__stdcall *)(int))resolve_final((int)v5, 838910877);
+  v7 = v6(1);
+  v8 = v6(1);
+  if ( byte_4555B8 )
+  {
+    if ( v7 == v8 )
+      goto LABEL_3;
+  }
+  else if ( v7 != v8 )
+  {
+LABEL_3:
+    v9 = gen_char(1, a2, a3);
+    byte_4555B8 = 1;
+    goto LABEL_6;
+  }
+  v9 = gen_char(0, a2, a3);
+LABEL_6:
+  if ( *(int *)(a2 + 556) >= 256 )
+    *(_DWORD *)(a2 + 556) = 0;
+  ++*(_DWORD *)(a2 + 556);
+  return byte_45329F[*(_DWORD *)(a2 + 556)] == (char)(a1 ^ v9);
+}
+````
+- Gọi v6 (tức BlockInput) 2 lần với đầu vào là 1. v7 sẽ trả về giá trị true còn nếu có debug thì v8 sẽ có giá trị trả về là true nên ta sẽ bypass bằng cách cho chạy BlockInput 2 lần
+- Giá trị của dl bằng 1 khi không debug
+### Case 7:
+- Làm tương tự hàm TlsCallback ta thấy giá trị của EAX được trả về là hàm NtQueryInformationProcess()
+- Giá trị của dl bằng 1 khi không debug
+# Code solve
